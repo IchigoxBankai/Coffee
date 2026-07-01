@@ -12,36 +12,40 @@ const Story = () => {
 
   useGSAP(() => {
     // Parallax background effect
-    gsap.fromTo(
-      bgRef.current,
-      { yPercent: -15 },
-      {
-        yPercent: 15,
-        ease: 'none',
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: 'top bottom',
-          end: 'bottom top',
-          scrub: true,
-        },
-      }
-    );
+    if (bgRef.current && containerRef.current) {
+      gsap.fromTo(
+        bgRef.current,
+        { yPercent: -15 },
+        {
+          yPercent: 15,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: containerRef.current,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: true,
+          },
+        }
+      );
+    }
 
     // Text Reveal
-    gsap.fromTo(
-      textRef.current,
-      { opacity: 0, y: 55 },
-      {
-        opacity: 1,
-        y: 0,
-        duration: 1.2,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: 'top 70%',
-        },
-      }
-    );
+    if (textRef.current && containerRef.current) {
+      gsap.fromTo(
+        textRef.current,
+        { opacity: 0, y: 55 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 1.2,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: containerRef.current,
+            start: 'top 70%',
+          },
+        }
+      );
+    }
   }, { scope: containerRef });
 
   return (
@@ -54,7 +58,7 @@ const Story = () => {
       <div 
         ref={bgRef}
         className="absolute inset-0 w-full h-[130%] bg-cover bg-center"
-        style={{ backgroundImage: `url('/assets/story-bg.jpg')` }}
+        style={{ backgroundImage: `url('${import.meta.env.BASE_URL}assets/story-bg.jpg')` }}
       />
 
       {/* Luxury Cinematic Overlay */}

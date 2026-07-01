@@ -12,21 +12,23 @@ const WhyChooseUs = () => {
 
   useGSAP(() => {
     // Fade in both panels
-    gsap.fromTo(
-      [leftCardRef.current, rightCardRef.current],
-      { opacity: 0, y: 50 },
-      {
-        opacity: 1,
-        y: 0,
-        duration: 1,
-        stagger: 0.2,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: 'top 80%',
-        },
-      }
-    );
+    if (leftCardRef.current && rightCardRef.current && containerRef.current) {
+      gsap.fromTo(
+        [leftCardRef.current, rightCardRef.current],
+        { opacity: 0, y: 50 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 1,
+          stagger: 0.2,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: containerRef.current,
+            start: 'top 80%',
+          },
+        }
+      );
+    }
   }, { scope: containerRef });
 
   return (

@@ -36,39 +36,43 @@ const Gallery = () => {
 
   useGSAP(() => {
     // Reveal left content
-    gsap.fromTo(
-      leftContentRef.current.children,
-      { opacity: 0, x: -30 },
-      {
-        opacity: 1,
-        x: 0,
-        duration: 0.8,
-        stagger: 0.15,
-        ease: 'power2.out',
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: 'top 80%',
-        },
-      }
-    );
+    if (leftContentRef.current && leftContentRef.current.children && containerRef.current) {
+      gsap.fromTo(
+        leftContentRef.current.children,
+        { opacity: 0, x: -30 },
+        {
+          opacity: 1,
+          x: 0,
+          duration: 0.8,
+          stagger: 0.15,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: containerRef.current,
+            start: 'top 80%',
+          },
+        }
+      );
+    }
 
     // Reveal cards
-    gsap.fromTo(
-      cardsRef.current,
-      { opacity: 0, scale: 0.9, y: 30 },
-      {
-        opacity: 1,
-        scale: 1,
-        y: 0,
-        duration: 0.8,
-        stagger: 0.1,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: 'top 75%',
-        },
-      }
-    );
+    if (cardsRef.current && cardsRef.current.length > 0 && containerRef.current) {
+      gsap.fromTo(
+        cardsRef.current,
+        { opacity: 0, scale: 0.9, y: 30 },
+        {
+          opacity: 1,
+          scale: 1,
+          y: 0,
+          duration: 0.8,
+          stagger: 0.1,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: containerRef.current,
+            start: 'top 75%',
+          },
+        }
+      );
+    }
   }, { scope: containerRef });
 
   return (
@@ -136,7 +140,7 @@ const Gallery = () => {
                   {item.name}
                 </h4>
                 <div className="flex items-center gap-1">
-                  <Star className="w-3 h-3 fill-gold text-gold" />
+                  <Star className="w-3.5 h-3.5 fill-gold text-gold" />
                   <span className="text-[10px] font-bold text-coffee-black">{item.rating}</span>
                 </div>
               </div>

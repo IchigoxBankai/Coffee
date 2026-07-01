@@ -19,58 +19,66 @@ const Hero = () => {
   // Setup GSAP Animations
   useGSAP(() => {
     // 1. Initial fade-in of text content and buttons
-    gsap.fromTo(
-      leftContentRef.current.children,
-      { opacity: 0, y: 30 },
-      { 
-        opacity: 1, 
-        y: 0, 
-        duration: 1.2, 
-        stagger: 0.2, 
-        ease: 'power3.out',
-        delay: 0.5
-      }
-    );
+    if (leftContentRef.current && leftContentRef.current.children) {
+      gsap.fromTo(
+        leftContentRef.current.children,
+        { opacity: 0, y: 30 },
+        { 
+          opacity: 1, 
+          y: 0, 
+          duration: 1.2, 
+          stagger: 0.2, 
+          ease: 'power3.out',
+          delay: 0.5
+        }
+      );
+    }
 
     // 2. Continuous float animation for scroll indicator
-    gsap.to(scrollIndicatorRef.current, {
-      y: 10,
-      repeat: -1,
-      yoyo: true,
-      duration: 1.5,
-      ease: 'power1.inOut'
-    });
+    if (scrollIndicatorRef.current) {
+      gsap.to(scrollIndicatorRef.current, {
+        y: 10,
+        repeat: -1,
+        yoyo: true,
+        duration: 1.5,
+        ease: 'power1.inOut'
+      });
+    }
 
     if (!hasFrames) {
       // Fallback Scroll Animation (zoom into static cup image)
-      gsap.to(fallbackRef.current, {
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: 'top top',
-          end: 'bottom top',
-          scrub: true,
-          pin: true,
-          pinSpacing: false
-        },
-        scale: 1.6,
-        y: -50,
-        opacity: 0.8,
-        filter: 'blur(4px)',
-        ease: 'none'
-      });
+      if (fallbackRef.current && containerRef.current) {
+        gsap.to(fallbackRef.current, {
+          scrollTrigger: {
+            trigger: containerRef.current,
+            start: 'top top',
+            end: 'bottom top',
+            scrub: true,
+            pin: true,
+            pinSpacing: false
+          },
+          scale: 1.6,
+          y: -50,
+          opacity: 0.8,
+          filter: 'blur(4px)',
+          ease: 'none'
+        });
+      }
 
       // Fade out left text on scroll
-      gsap.to(leftContentRef.current, {
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: 'top top',
-          end: '50% top',
-          scrub: true,
-        },
-        opacity: 0,
-        y: -100,
-        ease: 'none'
-      });
+      if (leftContentRef.current && containerRef.current) {
+        gsap.to(leftContentRef.current, {
+          scrollTrigger: {
+            trigger: containerRef.current,
+            start: 'top top',
+            end: '50% top',
+            scrub: true,
+          },
+          opacity: 0,
+          y: -100,
+          ease: 'none'
+        });
+      }
     }
   }, { scope: containerRef, dependencies: [hasFrames] });
 
@@ -84,11 +92,10 @@ const Hero = () => {
     const frameImages = [];
     let loadedCount = 0;
 
-    // Helper to get frame filepath
+    // Helper to get frame filepath with base url support
     const getFrameUrl = (index) => {
-      // Look in public/assets/coffee_frames_20fps/frame_0000.jpg up to frame_0199.jpg
       const paddedIndex = String(index).padStart(4, '0');
-      return `/assets/coffee_frames_20fps/frame_${paddedIndex}.jpg`;
+      return `${import.meta.env.BASE_URL}assets/coffee_frames_20fps/frame_${paddedIndex}.jpg`;
     };
 
     // Attempt to load frame sequence
@@ -153,6 +160,8 @@ const Hero = () => {
     const initCanvasScroll = (images) => {
       const scrollObj = { frame: 0 };
       
+      if (!containerRef.current || !leftContentRef.current) return;
+
       gsap.to(scrollObj, {
         frame: totalFrames - 1,
         snap: 'frame',
@@ -220,7 +229,7 @@ const Hero = () => {
           <div 
             ref={fallbackRef}
             className="absolute inset-0 w-full h-full bg-cover bg-center scale-110"
-            style={{ backgroundImage: `url('/assets/hero-cup.jpg')` }}
+            style={{ backgroundImage: `url('${import.meta.env.BASE_URL}assets/hero-cup.jpg')` }}
           />
           {/* Dark Overlay for cinematic look */}
           <div className="absolute inset-0 bg-gradient-to-r from-luxury-black via-luxury-black/70 to-transparent z-1" />
